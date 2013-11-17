@@ -1,7 +1,7 @@
 class BookkeepingsController < ApplicationController
-
   before_action :set_group, only: [:index, :create, :calculate]
   before_action :set_bookkeeping, only: [:show, :update, :destroy, :add_proof, :remove_proof]
+
   # GET /bookkeepings
   # GET /bookkeepings.json
   def index

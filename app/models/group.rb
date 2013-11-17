@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 class Group < ActiveRecord::Base
   belongs_to :owner, class_name: 'User'
   has_many :group_members,    dependent: :destroy
