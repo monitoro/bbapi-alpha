@@ -1,5 +1,6 @@
 Bbapi::Application.routes.draw do  
 
+  get "activities/index"
   resources :monthly_balances, except: [:new, :edit]
   # get 'bookkeepings/get_first_issue_date' => 'bookkeepings#get_first_issue_date'
   resources :bookkeepings, except: [:new, :edit] do
@@ -46,6 +47,8 @@ Bbapi::Application.routes.draw do
     post 'users/remove_avatar' => 'users/registrations#remove_avatar', as: :remove_avatar
   end
 
+  resources :activities
+  
   # defaults: { :format => 'json' }
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
