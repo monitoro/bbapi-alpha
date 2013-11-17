@@ -1,6 +1,6 @@
 class ActivitiesController < ApplicationController
   def index
-    @activities = PublicActivity::Activity.order("created_at desc")
-    render json: @activities
+    @activities = current_user.activities
+    render json: @activities, serializers: PublicActivity::ActivitySerializer
   end
 end

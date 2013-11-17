@@ -1,6 +1,6 @@
 Bbapi::Application.routes.draw do  
-
-  get "activities/index"
+  get "activities" => "activities#index"
+  
   resources :monthly_balances, except: [:new, :edit]
   # get 'bookkeepings/get_first_issue_date' => 'bookkeepings#get_first_issue_date'
   resources :bookkeepings, except: [:new, :edit] do
