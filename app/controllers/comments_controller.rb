@@ -2,7 +2,31 @@ class CommentsController < ApplicationController
   before_action :set_commentable
   before_action :set_comment, only: [:show, :update, :destroy]
   before_filter :authenticate_user!
-  
+
+  def index
+    obj = {comments:[]}
+    
+    current_page = (params[:page].to_i.is_a? Integer) ? (params[:page].to_i > 0 ? params[:page].to_i : 1) : 1
+    @comments = @commentable.comments.page(current_page)
+
+    @comments.each {
+      |comment| obj[:comments].push({
+        id: comment.id,
+        content: comment.content,
+        create_at: comment.created_at,
+        writer: {
+          email: comment.writer.email
+        }
+      })
+    }
+
+    if @commentable.comments.page(current_page + 1).count > 0
+      obj['next'] = current_page + 1
+    end
+
+    render json: obj
+  end
+
   def show
     @comment = Comment.find(params[:id])
     render json: @comment

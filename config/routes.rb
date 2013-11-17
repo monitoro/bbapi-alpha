@@ -31,6 +31,7 @@ Bbapi::Application.routes.draw do
     end    
   end
   get 'users/:id/membered_groups' => "users/users#membered_groups"
+  get 'groups/:group_id/:commentable_type/:commentable_id/comments' => 'comments#index'
   post 'groups/:group_id/:commentable_type/:commentable_id/comments' => 'comments#create'
   delete 'groups/:group_id/:commentable_type/:commentable_id/comments/:comment_id' => 'comments#destroy'
 

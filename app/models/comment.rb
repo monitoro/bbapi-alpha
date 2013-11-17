@@ -10,4 +10,6 @@ class Comment < ActiveRecord::Base
 
   tracked owner: ->(controller, model) { controller && controller.current_user }
   tracked recipient: ->(controller, model) { model.writer }
+
+  paginates_per 3
 end
