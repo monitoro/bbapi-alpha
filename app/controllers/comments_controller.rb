@@ -1,9 +1,8 @@
 class CommentsController < ApplicationController
-
   before_action :set_commentable
   before_action :set_comment, only: [:show, :update, :destroy]
   before_filter :authenticate_user!
-
+  
   def show
     @comment = Comment.find(params[:id])
     render json: @comment
