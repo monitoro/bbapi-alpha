@@ -9,7 +9,7 @@ class Comment < ActiveRecord::Base
   validates_presence_of :writer_id , :commentable_id
 
   tracked owner: ->(controller, model) { controller && controller.current_user }
-  tracked recipient: ->(controller, model) { model.writer }
+  tracked recipient: ->(controller, model) { model.commentable.group }
 
   paginates_per 3
 end

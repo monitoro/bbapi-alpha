@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
   has_many :bookkeepings_written_by_me, class_name: 'Bookkeeping', foreign_key: 'writer_id'
   has_many :authorizations
   has_many :proofs, dependent: :destroy
+  has_many :comments, foreign_key: 'writer_id'
 
   # to declare associations for 'like' functionality
   has_many :likes, dependent: :destroy
@@ -30,7 +31,7 @@ class User < ActiveRecord::Base
   
   # token_authenticable is deprecated
   # https://gist.github.com/josevalim/fb706b1e933ef01e4fb6
-
+  
   def self.from_omniauth(auth, signed_in_resource=nil)    
     user = find_or_create_by(email: authinfo.email) do |user|                  
       # Authorization.create(provider: auth[:provider], uid: auth[:uid], user_id: user.id)        
@@ -49,6 +50,10 @@ class User < ActiveRecord::Base
     user
   end
 
+  def activities(limit = 30)
+    PublicActivity::Activity.where(:recipient_type => "Group", :recipient_id => membered_groups_id).order("created_at desc").limit(limit)
+  end
+
   def ensure_authentication_token
     if authentication_token.blank?
       self.authentication_token = generate_authentication_token
@@ -56,6 +61,10 @@ class User < ActiveRecord::Base
   end
  
   private
+
+  def membered_groups_id
+    membered_groups.map {|group| group.id} 
+  end
   
   def generate_authentication_token
     loop do

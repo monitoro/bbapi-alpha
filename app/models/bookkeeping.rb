@@ -17,8 +17,8 @@ class Bookkeeping < ActiveRecord::Base
   validates :account_title_id, presence: true
   validates :writer_id, presence: true
 
-
   tracked owner: ->(controller, model) { controller && controller.current_user }
+  tracked recipient: ->(controller, model) { model.group }
   
   def self.get_first_issue_date
     Bookkeeping.select("issue_date").order("issue_date ASC").first.issue_date
