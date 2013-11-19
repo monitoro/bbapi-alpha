@@ -6,8 +6,8 @@ class CommentsController < ApplicationController
   def index
     obj = {comments:[]}
     
-    current_page = (params[:page].to_i.is_a? Integer) ? (params[:page].to_i > 0 ? params[:page].to_i : 1) : 1
-    @comments = @commentable.comments.page(current_page)
+    next_comment = params[:next] || ''
+    @comments = @commentable.comments.where("id < ?", next_comment).reverse.take(3).reverse
 
     @comments.each {
       |comment| obj[:comments].push({
@@ -20,8 +20,8 @@ class CommentsController < ApplicationController
       })
     }
 
-    if @commentable.comments.page(current_page + 1).count > 0
-      obj['next'] = current_page + 1
+    if @commentable.comments.where("id < ?", @comments.first.id).length > 0
+      obj['next'] = @comments.first.id
     end
 
     render json: obj
