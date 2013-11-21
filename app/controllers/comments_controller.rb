@@ -20,8 +20,10 @@ class CommentsController < ApplicationController
       })
     }
 
-    if @commentable.comments.where("id < ?", @comments.first.id).length > 0
-      obj['next'] = @comments.first.id
+    if @comments.length > 0
+      if @commentable.comments.where("id < ?", @comments.first.id).length > 0
+        obj['next'] = @comments.first.id
+      end
     end
 
     render json: obj
