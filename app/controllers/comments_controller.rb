@@ -5,9 +5,9 @@ class CommentsController < ApplicationController
 
   def index
     obj = {comments:[]}
-    
-    next_comment = params[:next] || ''
-    @comments = @commentable.comments.where("id < ?", next_comment).reverse.take(3).reverse
+    @comments = params[:next] ? 
+                @commentable.comments.where("id < ?", params[:next]).reverse.take(3).reverse :
+                @commentable.comments.order(id: :desc).limit(3).reverse
 
     @comments.each {
       |comment| obj[:comments].push({
