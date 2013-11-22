@@ -15,7 +15,8 @@ class CommentsController < ApplicationController
         content: comment.content,
         create_at: comment.created_at,
         writer: {
-          email: comment.writer.email
+          email: comment.writer.email,
+          avatar_url: comment.writer.avatar.url
         }
       })
     }
