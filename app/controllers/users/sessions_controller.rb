@@ -8,7 +8,7 @@ class Users::SessionsController < Devise::SessionsController
       resource = User.find_for_database_authentication(:email => params[:email])
       invalid_login_attempt unless resource.valid_password? params[:password]
     elsif !params[:access_token].nil? && !params[:provider].nil?      
-      resource = User.from_authinfo userinfo_from_auth_service(params[:provider], params[:access_token])
+      resource = User.from_authinfo userinfo_from_auth_service(params[:provider], params[:access_token])      
     else
       invalid_login_attempt
     end
@@ -56,7 +56,8 @@ class Users::SessionsController < Devise::SessionsController
       authinfo[:provider] = 'facebook'
       authinfo[:email] = fb_session.me.email
       authinfo[:uid] = fb_session.me.id
-    end
+      authinfo[:username] = fb_session.me.username            
+    end    
     authinfo
   end
   
