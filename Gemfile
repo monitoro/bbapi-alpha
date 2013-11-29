@@ -41,6 +41,8 @@ gem 'omniauth-twitter'
 gem 'omniauth-facebook'
 gem 'omniauth-github'
 
+gem 'public_activity'
+
 gem 'mini_fb'
 
 gem 'dotenv-rails', groups: [:development, :test]
@@ -70,6 +72,8 @@ gem 'coveralls', require: false
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
+
 gem 'kaminari'
 
 # gem 'debugger'
+

@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
 class ApplicationController < ActionController::API
   include ActionController::MimeResponds
   include ActionController::StrongParameters
+  include PublicActivity::StoreController
 
   before_filter :configure_permitted_parameters, if: :devise_controller?
   before_filter :authenticate_user_from_token!
