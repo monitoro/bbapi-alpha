@@ -72,4 +72,4 @@ gem 'coveralls', require: false
 
 gem 'kaminari'
 
-gem 'debugger'
+# gem 'debugger'
