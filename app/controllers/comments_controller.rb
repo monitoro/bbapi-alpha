@@ -4,10 +4,11 @@ class CommentsController < ApplicationController
   before_filter :authenticate_user!
 
   def index
+    per_request = params[:limit] || 3
     obj = {comments:[]}
     @comments = params[:next] ? 
-                @commentable.comments.where("id < ?", params[:next]).reverse.take(3).reverse :
-                @commentable.comments.order(id: :desc).limit(3).reverse
+                @commentable.comments.where("id < ?", params[:next]).reverse.take(per_request).reverse :
+                @commentable.comments.order(id: :desc).limit(per_request).reverse
 
     @comments.each {
       |comment| obj[:comments].push({

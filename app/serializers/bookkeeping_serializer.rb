@@ -4,6 +4,5 @@ class BookkeepingSerializer < ActiveModel::Serializer
   has_one :writer
   has_one :account_title
   has_many :proofs
-  has_many :comments
   has_many :likers, embed: :ids
 end
