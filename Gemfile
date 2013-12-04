@@ -27,6 +27,7 @@ group :test do
   gem 'database_cleaner', '=1.0.1' # Clean database between tests
   gem 'rspec-rails'       # Test framework
   gem 'shoulda'               # nice rspec matchers
+  gem 'spring-commands-rspec'  
 end
 
 group :development, :test do
@@ -72,4 +73,8 @@ gem 'coveralls', require: false
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
-gem 'debugger'
+
+gem 'kaminari'
+
+# gem 'debugger'
+
