@@ -16,7 +16,9 @@ Bbapi::Application.routes.draw do
     get 'list_members', on: :member
     resources :account_titles
     resources :bookkeepings do 
+      get 'index_between', on: :collection
       get 'calculate',  on: :collection
+      get 'calculate_between',  on: :collection
       post 'add_proof',  on: :member
       post 'like' => 'bookkeepings#like'
       delete 'like' => 'bookkeepings#dislike'
