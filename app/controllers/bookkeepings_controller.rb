@@ -55,12 +55,37 @@ class BookkeepingsController < ApplicationController
     head :no_content
   end
 
+  def calculate_between
+    end_date = Date.today.at_end_of_day
+    
+    case params[:between]
+    when "week"
+      start_date = end_date.at_beginning_of_week
+    when "month"
+      start_date = end_date.at_beginning_of_month
+    when "year"
+      start_date = end_date.at_beginning_of_year
+    else
+      return
+    end    
+
+    calc_query = Group.find(params[:group_id]).bookkeepings.
+      where("issue_date >= ?", start_date).
+      where("issue_date < ?", Time.parse(end_date) + 1.day)
+
+    income = calc_query.where("operator = '+'").sum('amount')
+    outlay = calc_query.where("operator = '-'").sum('amount')
+    total = income - outlay
+
+    render json: { income: income, outlay: outlay, total: total }
+  end
+
+
   def calculate
     start_date = params[:start_date]
     end_date = params[:end_date]
     # income = Group.find(params[:group_id]).bookkeepings.where("issue_date between ? and ?", start_date, end_date).where("operator = '+'").sum('amount')    
     # outlay = Group.find(params[:group_id]).bookkeepings.where("issue_date between ? and ?", start_date, end_date).where("operator = '-'").sum('amount')    
-
     calc_query = Group.find(params[:group_id]).bookkeepings
     if start_date.present?
       calc_query = calc_query.where("issue_date >= ?", start_date)
