@@ -1,3 +1,5 @@
+require "open-uri"
+
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -45,7 +47,9 @@ class User < ActiveRecord::Base
   def self.from_authinfo(authinfo)
     user = find_or_create_by(email: authinfo[:email]) do |user|
       user.password = Devise.friendly_token[0,20]
-      user.username = authinfo[:username]      
+      user.username = authinfo[:username]
+      user.avatar = open(authinfo[:picture_url])
+      user.save
     end
     Authorization.find_or_create_by(provider: authinfo[:provider], uid: authinfo[:uid], user: user)
     user

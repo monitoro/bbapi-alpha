@@ -53,11 +53,13 @@ class Users::SessionsController < Devise::SessionsController
     case provider
     when 'facebook'
       fb_session = MiniFB::OAuthSession.new(params[:access_token], 'es_ES')      
+      
       authinfo[:provider] = 'facebook'
-      authinfo[:email] = fb_session.me.email
+      authinfo[:email] = "#{fb_session.me.username}@facebook.com" #fb_session.me.email
+      authinfo[:username] = fb_session.me.username
       authinfo[:uid] = fb_session.me.id
-      authinfo[:username] = fb_session.me.username            
-    end    
+      authinfo[:picture_url] = "https://graph.facebook.com/#{fb_session.me.id}/picture?type=large&access_token=#{access_token}"
+    end
     authinfo
   end
   
