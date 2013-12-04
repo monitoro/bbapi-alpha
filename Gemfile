@@ -74,7 +74,7 @@ gem 'coveralls', require: false
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
 
-gem 'kaminari'
+# gem 'kaminari'
 
-# gem 'debugger'
+gem 'debugger'
 

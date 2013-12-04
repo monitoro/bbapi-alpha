@@ -5,16 +5,46 @@ class BookkeepingsController < ApplicationController
   # GET /bookkeepings
   # GET /bookkeepings.json
   def index
-    @bookkeepings = @group.bookkeepings.order(created_at: :desc)
+    @bookkeepings = @_bookkeepings = @group.bookkeepings
 
     if params[:start_date]
-      @bookkeepings = @bookkeepings.where("issue_date >= ?", params[:start_date])
+      @_bookkeepings = @bookkeepings.where("issue_date >= ?", params[:start_date])
     end
     if params[:end_date]
-      @bookkeepings = @bookkeepings.where("issue_date < ?", Date.parse(params[:end_date]) + 1.day)
+      @_bookkeepings = @_bookkeepings.where("issue_date < ?", Date.parse(params[:end_date]) + 1.day)
     end
 
-    render json: @bookkeepings
+    bookkeepings = {bookkeepings:[]}
+    per_request = params[:limit] || 3
+    @_bookkeepings = params[:next] ? 
+                @_bookkeepings.where("id < ?", params[:next]).reverse.take(per_request).reverse :
+                @_bookkeepings.order(id: :desc).limit(per_request).reverse
+
+    @_bookkeepings.each {
+      |bookkeeping| bookkeepings[:bookkeepings].push({
+        id: bookkeeping.id,
+        writer: bookkeeping.writer,
+        content: bookkeeping.content,
+        created_at: bookkeeping.created_at,
+        issue_date: bookkeeping.issue_date,
+        account_title: bookkeeping.account_title,
+        remark: bookkeeping.remark,
+        operator: bookkeeping.operator,
+        amount: bookkeeping.amount,
+        issuer: bookkeeping.issuer,
+        liker_ids: bookkeeping.liker_ids,
+        likes_count: bookkeeping.likes_count,
+        comments_count: bookkeeping.comments.length
+      })
+    }
+
+    if @_bookkeepings.length > 0
+      if @bookkeepings.where("id < ?", @_bookkeepings.first.id).length > 0
+        bookkeepings['next'] = @_bookkeepings.first.id
+      end
+    end
+
+    render json: bookkeepings
   end
 
   # GET /bookkeepings/1
