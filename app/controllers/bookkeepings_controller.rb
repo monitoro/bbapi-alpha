@@ -31,7 +31,11 @@ class BookkeepingsController < ApplicationController
         remark: bookkeeping.remark,
         operator: bookkeeping.operator,
         amount: bookkeeping.amount,
-        issuer: bookkeeping.issuer,
+        issuer: {
+          id:bookkeeping.issuer.id,
+          username:bookkeeping.issuer.username,
+          avatar_url:bookkeeping.issuer.avatar.url
+        },
         liker_ids: bookkeeping.liker_ids,
         likes_count: bookkeeping.likes_count,
         comments_count: bookkeeping.comments.length
