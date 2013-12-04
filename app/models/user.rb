@@ -47,13 +47,9 @@ class User < ActiveRecord::Base
   def self.from_authinfo(authinfo)
     user = find_or_create_by(email: authinfo[:email]) do |user|
       user.password = Devise.friendly_token[0,20]
-<<<<<<< HEAD
       user.username = authinfo[:username]
       user.avatar = open(authinfo[:picture_url])
       user.save
-=======
-      user.username = authinfo[:username]      
->>>>>>> upstream/master
     end
     Authorization.find_or_create_by(provider: authinfo[:provider], uid: authinfo[:uid], user: user)
     user
